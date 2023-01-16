@@ -13,14 +13,14 @@ pipeline{
             steps{
                 sh returnStatus: true, script: 'terraform workspace new dev'
                 sh "terraform init"
-                sh "ansible-playbook terraform.yml"
+                sh "terraform plan -var-file=dev.tfvars"
             }
         }
         stage('terraform init and apply - prd '){
             steps{
                 sh returnStatus: true, script: 'terraform workspace new prd'
                 sh "terraform init"
-                sh "ansible-playbook terraform.yml -e app_env=prod"
+                sh "terraform plan -var-file=prod.tfvars"
             }
         }
     }

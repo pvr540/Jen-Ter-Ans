@@ -1,0 +1,13 @@
+---
+- hosts: localhost
+  become: True
+  tasks:
+    - name: Install boto3
+      pip:
+        name: boto3
+        state: present
+    - name: create s3 bucket
+      s3_bucket:
+        name: my-s3-bucket
+        state: present
+
