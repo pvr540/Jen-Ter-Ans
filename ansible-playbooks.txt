@@ -1,0 +1,58 @@
+- hosts: localhost
+  vars:
+    msg: "Hello testing the ansible scripts"
+  tasks:
+    - name: Copy file with content
+      copy:
+         dest: /Users/pvreddy/dummy.txt
+         content: "{{msg}}"
+
+# in below with_items means while loop inside the items as item varible
+
+- hosts: localhost
+  tasks:
+     - name: create multi directories
+       file:
+          path: "{{item}}"
+          state: directory
+       with_items:
+          - dir1
+          - dir2
+
+#tags are used to run particular tasks
+# ansible-playbook <playbook.yml> --tags "start"
+# we can skip particular task also
+# ansible-playbook <playbook.yml> --skip-tags "install"
+
+- hosts: localhost
+  tasks:
+     - name: Install packages
+       apt:
+         name:
+           - get
+           - mysql-server
+         update_cache: yes
+       tags:
+           - install
+           - always --> this means it will execute every time . you have to skip manually
+           - never --> it won't execute unless if you manually run
+           - mytask --> this is custom tag to run group of tasks to execute
+     - name: start mysql
+       service: name=mysql state=started
+       tags:
+          - start
+          - mytask
+
+
+ - name: Check the disk usage of all the file system in the remote servers
+   hosts: testservers
+   tasks:
+    - name: Execute the df command
+      register: dfout
+      command: "df -h"
+
+    - debug:
+        var: dfout.stdout_lines
+
+
+

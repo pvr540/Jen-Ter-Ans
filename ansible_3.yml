@@ -1,0 +1,19 @@
+---
+- name: Start of Stop Server instance based on PID/LOCK file availability
+  hosts: localhost
+  tasks:
+    - name: Start the instance when the PID file is not present
+      become: yes
+      become_user: pvreddy
+      command: "startserver.sh"
+      args:
+        creates: "/path/to/pid/instance.pid"
+      register: startinst
+
+    - name: Stop the instance when the lock file is present
+      become: yes
+      become_user: pvreddy
+      command: "stopserver.sh"
+      args:
+        removes: "/path/to/lockfile/instance.lck"
+      register: stopinst

@@ -1,0 +1,15 @@
+
+ansible localhost -m ping
+ansible localhost -m command -a 'ls'
+ansible localhost -m command -a 'pwd'
+
+ansible localhost -m file -a 'path=/Users/pvreddy/ state=touch mode=0770 owner=pvreddy'
+ansible localhost -m file -a 'path=/Users/pvreddy state=directory mode=0770 owner=pvreddy'
+
+
+ansible localhost/all/particular machine -m command -a "app install apache2"
+ansible localhost -m service -a "name=apache2 state=started"
+ansible localhost -m command -a "apt -y remove apache2"
+
+ansible-playbook <playbook> --list-tasks
+ansible-playbook <playbook> --list-tags
